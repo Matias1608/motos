@@ -23,7 +23,7 @@ void ModificarLista(struct nodo **a)
         marca[i]=toupper(marca[i]);
     }
     aux=*a;
-    if(aux==NULL)
+    /*if(aux==NULL)
     {
     nuevo=malloc(sizeof(struct nodo));
     memset(nuevo, 0, sizeof(struct nodo));
@@ -31,16 +31,29 @@ void ModificarLista(struct nodo **a)
     nuevo->p=NULL;
     *a=nuevo;
     aux=*a;
-    return;
-    }
+    }*/
     
-    while (strcmp(aux->marca, marca) != 0 && aux->p != NULL)
+    while (aux->p != NULL && strcmp(aux->marca, marca) != 0)
     {
         aux=aux->p;
     }
+
     if(strcmp(aux->marca, marca) == 0)
     {
+        int op;
         printf("La marca ya existe en la lista.\n");
+        printf("Desea buscar modelo?\n1-Si/2-No\n");
+        scanf("%d",&op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+            AgregarMoto(&aux->moto);
+        }
     }
     if(aux->p == NULL && strcmp(aux->marca, marca) != 0)
     {   
@@ -66,6 +79,10 @@ void ModificarLista(struct nodo **a)
             return;
         }
     }
-    
-    return;
 };
+
+void AgregarMoto(struct moto **m)
+{
+    struct moto *nueva_moto, *aux;
+
+}
