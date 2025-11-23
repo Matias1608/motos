@@ -23,16 +23,46 @@ void ModificarLista(struct nodo **a)
         marca[i]=toupper(marca[i]);
     }
     aux=*a;
-    /*if(aux==NULL)
+    if(aux==NULL)
     {
-    nuevo=malloc(sizeof(struct nodo));
-    memset(nuevo, 0, sizeof(struct nodo));
-    strcpy(nuevo->marca, marca);
-    nuevo->p=NULL;
-    *a=nuevo;
-    aux=*a;
-    }*/
-    
+         int op;
+        printf("La marca no existe. Desea agregarla? (1-Si / 2-No):\n ");
+        scanf("%d", &op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+        nuevo=malloc(sizeof(struct nodo));
+        memset(nuevo, 0, sizeof(struct nodo));
+        strcpy(nuevo->marca, marca);
+        nuevo->p=NULL;
+        *a=nuevo;
+        aux=*a;
+        printf("Desea agregar un modelo?\n1-Si/2-No\n");
+        scanf("%d",&op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+            AgregarMoto(&aux->moto);
+        }
+        }
+        if(op==2)
+        {
+            return;
+        }
+ 
+    }
+    else
+    {
     while (aux->p != NULL && strcmp(aux->marca, marca) != 0)
     {
         aux=aux->p;
@@ -42,7 +72,7 @@ void ModificarLista(struct nodo **a)
     {
         int op;
         printf("La marca ya existe en la lista.\n");
-        printf("Desea buscar modelo?\n1-Si/2-No\n");
+        printf("Desea buscar un modelo?\n1-Si/2-No\n");
         scanf("%d",&op);
         while(op<1 || op>2)
         {
@@ -73,11 +103,24 @@ void ModificarLista(struct nodo **a)
         strcpy(nuevo->marca, marca);
         nuevo->p=NULL;
         aux->p=nuevo;
+        printf("Desea agregar un modelo?\n1-Si/2-No\n");
+        scanf("%d",&op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+            AgregarMoto(&aux->moto);
+        }
         }
         if(op==2)
         {
             return;
         }
+    }
     }
 };
 
