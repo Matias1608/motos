@@ -143,9 +143,7 @@ void ModificarLista(struct nodo **a)
 
 void AgregarMoto(struct moto **m)
 {
-    int sel, precio, stock;
-    precio=0;
-    stock=0;
+    int sel;
     struct moto *nueva_moto, *aux;
     char modelo[20];
     printf("Ingrese modelo:\n");
@@ -192,18 +190,21 @@ void AgregarMoto(struct moto **m)
         
         if(op==1)
         {
-        nueva_moto=malloc(sizeof(struct moto));
-        memset(nueva_moto, 0, sizeof(struct moto));
-        strcpy(nueva_moto->modelo, modelo);
-        nueva_moto->m=NULL;
-        *m=nueva_moto;
-        aux=*m;
-        printf("Ingrese stock:");
-        scanf("%d",&stock);
-        aux->stock=stock;
-        printf("Ingrese precio:$");
-        scanf("%d",&precio);
-        aux->precio=precio;
+            int stock, precio;
+            precio=0;
+            stock=0;
+            nueva_moto=malloc(sizeof(struct moto));
+            memset(nueva_moto, 0, sizeof(struct moto));
+            strcpy(nueva_moto->modelo, modelo);
+            nueva_moto->m=NULL;
+            *m=nueva_moto;
+            aux=*m;
+            printf("Ingrese stock:");
+            scanf("%d",&stock);
+            aux->stock=stock;
+            printf("Ingrese precio:$");
+            scanf("%d",&precio);
+            aux->precio=precio;
         }
         
         if(op==2)
@@ -214,49 +215,53 @@ void AgregarMoto(struct moto **m)
     }
     else
     {
-    while (aux->m != NULL && strcmp(aux->modelo, modelo) != 0)
-    {
-        aux=aux->m;
-    }
+        while (aux->m != NULL && strcmp(aux->modelo, modelo) != 0)
+        {
+            aux=aux->m;
+        }
 
-    if(strcmp(aux->modelo, modelo) == 0)
-    {
-        int op;
-        printf("Modelo encontrado.\n");
-        printf("Desea modificar?\n1-Si/2-No\n");
-        scanf("%d",&op);
-        while(op<1 || op>2)
+        if(strcmp(aux->modelo, modelo) == 0)
         {
-            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
-            while(getchar() != '\n');
-            scanf("%d", &op);
-        }
-        if(op==1)
-        {
-           int mod; 
-           printf("Modificar:\n1-Stock\n2-Precio\n");
-           scanf("%d", &mod);
-           while(mod<1 || mod>2)
-        {
-            printf("Opcion invalida. Ingrese 1 para stock o 2 para precio:\n");
-            while(getchar() != '\n');
+            int op;
+            printf("Modelo encontrado.\n");
+            printf("Desea modificar?\n1-Si/2-No\n");
+            scanf("%d",&op);
+            while(op<1 || op>2)
+            {
+                printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+                while(getchar() != '\n');
+                scanf("%d", &op);
+            }
+            if(op==1)
+            {
+            int mod; 
+            printf("Modificar:\n1-Stock\n2-Precio\n");
             scanf("%d", &mod);
-        }
-        switch(mod)
-        {
-        case 1:
-            printf("Ingrese stock:");
-            scanf("%d",&stock);
-            aux->stock=stock;
-            break;
-        case 2:
-            printf("Ingrese precio:$");
-            scanf("%d",&precio);
-            aux->precio=precio;
-            break;
-        default:
-            break;
-        }
+            while(mod<1 || mod>2)
+            {
+                printf("Opcion invalida. Ingrese 1 para stock o 2 para precio:\n");
+                while(getchar() != '\n');
+                scanf("%d", &mod);
+            }
+            switch(mod)
+            {
+                case 1:
+                    int stock;
+                    printf("Stock actual:%d\n", aux->stock);
+                    printf("Ingrese nuevo stock:");
+                    scanf("%d",&stock);
+                    aux->stock=stock;
+                    break;
+                case 2:
+                    int precio;
+                    printf("Precio actual:$%d\n", aux->precio);
+                    printf("Ingrese precio:$");
+                    scanf("%d",&precio);
+                    aux->precio=precio;
+                    break;
+                default:
+                    break;
+            }
         }
     }
     if(aux->m == NULL && strcmp(aux->modelo, modelo) != 0)
@@ -273,19 +278,19 @@ void AgregarMoto(struct moto **m)
         }
         
         if(op==1)
-        {
-        nueva_moto=malloc(sizeof(struct moto));
-        memset(nueva_moto, 0, sizeof(struct moto));
-        strcpy(nueva_moto->modelo, modelo);
-        nueva_moto->m=NULL;
-        *m=nueva_moto;
-        aux=*m;
-        printf("Ingrese stock:");
-        scanf("%d",&stock);
-        aux->stock=stock;
-        printf("Ingrese precio:$");
-        scanf("%d",&precio);
-        aux->precio=precio;
+        {   int stock, precio;
+            nueva_moto=malloc(sizeof(struct moto));
+            memset(nueva_moto, 0, sizeof(struct moto));
+            strcpy(nueva_moto->modelo, modelo);
+            nueva_moto->m=NULL;
+            aux->m=nueva_moto;
+            aux=nueva_moto;
+            printf("Ingrese stock:");
+            scanf("%d",&stock);
+            aux->stock=stock;
+            printf("Ingrese precio:$");
+            scanf("%d",&precio);
+            aux->precio=precio;
         }
         
         if(op==2)
@@ -297,5 +302,83 @@ void AgregarMoto(struct moto **m)
     }
 }
 
+void GuardarLista(struct nodo *a)
+{
+    FILE *archivo_lista=fopen("stock.dat", "wb");
 
+    if(archivo_lista==NULL)
+    {
+        perror("Error al crear stock.dat");
+        return;
+    }
+    struct nodo *aux=a;
+    while(aux !=NULL)
+    {
+        int contador=0;
+  
+        struct moto *temp = aux->moto;
+        while (temp!=NULL)
+        {
+            contador++;
+            temp=temp->m;
+        }
 
+        fwrite(aux->marca,sizeof(char),20,archivo_lista);
+        fwrite(&contador, sizeof(int),1, archivo_lista);
+
+        temp=aux->moto;
+
+        while (temp!=NULL)
+        {
+            fwrite(temp, sizeof(struct moto),1, archivo_lista);
+            temp=temp->m;
+        }
+        aux=aux->p;
+    }
+
+    fclose(archivo_lista);
+    printf("Stock guardado en stock.dat");
+}
+
+struct nodo* LeerLista(FILE *fd)
+{
+    struct nodo *head, *actual, *prev;
+    struct moto *nueva, *previa;
+    char marca[20];
+    int nmot;
+    head=malloc(sizeof(struct nodo));
+    head->moto=NULL;
+    while(fread(&marca, sizeof(marca),1,fd)>0)
+    {
+        actual=malloc(sizeof(struct nodo));
+        strcpy(actual->marca, marca);
+        fread(&nmot,sizeof(int),1,fd);
+        for(int i=0; i<nmot; i++)
+        {   
+            nueva=malloc(sizeof(struct moto));
+            fread(nueva, sizeof(struct moto),1,fd);
+            if(actual->moto==NULL)
+            {
+                actual->moto=nueva;
+                nueva->m=NULL;
+            }
+            else
+            {
+                previa->m=nueva;
+                nueva->m=NULL;
+            }
+            previa=nueva;   
+        }
+        if(head==NULL)
+        {
+            head=actual;
+        }
+        else
+        {
+            prev->p=actual;
+        }
+        prev = actual;
+       
+    }
+     return head;
+}
