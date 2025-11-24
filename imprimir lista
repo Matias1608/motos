@@ -2,29 +2,40 @@ void MostrarListado(struct nodo *lista)
 {
     struct nodo *aux = lista;
 
-    if (aux == NULL) {
-        printf("La lista esta vacia.\n");
+    if (aux == NULL)
+    {
+        printf("\n[INFO] La base de datos esta vacia.\n");
         return;
     }
 
-    printf("\n--- LISTADO DE STOCK ---\n");
+    printf("\n============================================\n");
+    printf("              LISTADO DE STOCK              \n");
+    printf("============================================\n");
 
     while (aux != NULL) // Recorremos las MARCAS
     {
-        printf("MARCA: %s\n", aux->marca);
-        printf("%-20s %-10s %-10s\n", "Modelo", "Precio", "Stock"); // Encabezados de columna
+        printf("\n> MARCA: %s\n", aux->marca);
+        printf("--------------------------------------------\n");
+        printf("%-20s %-10s %-10s\n", "MODELO", "PRECIO", "STOCK");
         printf("--------------------------------------------\n");
 
         struct moto *temp = aux->moto;
+        
+        if (temp == NULL)
+        {
+            printf("  (Sin modelos registrados)\n");
+        }
+
         while (temp != NULL) // Recorremos las MOTOS
         {
-            // TAREA: Completa este printf con: temp->modelo, temp->precio, temp->stock
-            // Usa %-20s para modelo, $%d para precio y %d para stock
-            printf("                  ", ... ); 
+            // %-20s: String justificado a la izquierda, 20 espacios
+            // %-9d: Entero justificado a la izquierda
+            printf("%-20s $%-9d %-10d\n", temp->modelo, temp->precio, temp->stock);
             
             temp = temp->m;
         }
-        printf("\n"); // Espacio entre marcas
+        
         aux = aux->p;
     }
+    printf("\n============================================\n");
 }
