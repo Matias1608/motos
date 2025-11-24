@@ -14,10 +14,27 @@
 
 void ModificarLista(struct nodo **a)
 {
+    int sel;
     struct nodo *nuevo, *aux;
     char marca[20];
     printf("Ingrese la marca de la moto: ");
     scanf("%s", marca);
+    printf("Ingreso: %s\n¿Es correcto? (1-Si / 2-No):\n", marca);
+    scanf("%d", &sel);
+    while(sel<1 || sel>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &sel);
+        }
+    while(sel==2)
+    {
+        printf("Ingrese la marca de la moto: ");
+        scanf("%s", marca);
+        printf("Ingreso: %s\n¿Es correcto? (1-Si / 2-No):\n", marca);
+        scanf("%d", &sel);
+    }
+
     for(int i=0; marca[i] != '\0'; i++)
     {
         marca[i]=toupper(marca[i]);
@@ -113,7 +130,7 @@ void ModificarLista(struct nodo **a)
         }
         if(op==1)
         {
-            AgregarMoto(&aux->moto);
+            AgregarMoto(&nuevo->moto);
         }
         }
         if(op==2)
@@ -126,6 +143,121 @@ void ModificarLista(struct nodo **a)
 
 void AgregarMoto(struct moto **m)
 {
+    int sel, precio, stock;
+    precio=0;
+    stock=0;
     struct moto *nueva_moto, *aux;
+    char modelo[20];
+    printf("Ingrese modelo:\n");
+    scanf("%s", modelo);
+    printf("Ingreso: %s\n¿Es correcto? (1-Si / 2-No):\n", modelo);
+    scanf("%d", &sel);
+    while(sel<1 || sel>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &sel);
+        }
+    while(sel==2)
+    {
+        printf("Ingrese modelo:\n");
+        scanf("%s", modelo);
+        printf("Ingreso: %s\n¿Es correcto? (1-Si / 2-No):\n", modelo);
+        scanf("%d", &sel);
+        while(sel<1 || sel>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &sel);
+        }
+    }
 
+    for(int i=0; modelo[i] != '\0'; i++)
+    {
+        modelo[i]=toupper(modelo[i]);
+    }
+    aux=*m;
+    if(aux==NULL)
+    {
+        int op;
+        printf("El modelo no existe. Desea agregarlo? (1-Si / 2-No):\n ");
+        scanf("%d", &op);
+        
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        
+        if(op==1)
+        {
+        nueva_moto=malloc(sizeof(struct moto));
+        memset(nueva_moto, 0, sizeof(struct moto));
+        strcpy(nueva_moto->modelo, modelo);
+        nueva_moto->m=NULL;
+        *m=nueva_moto;
+        aux=*m;
+        printf("Ingrese stock:");
+        scanf("%d",&stock);
+        printf("Ingrese precio:$");
+        scanf("%d",&precio);
+        }
+        
+        if(op==2)
+        {
+            return;
+        }
+ 
+    }
+    else
+    {
+    while (aux->m != NULL && strcmp(aux->modelo, modelo) != 0)
+    {
+        aux=aux->m;
+    }
+
+    if(strcmp(aux->modelo, modelo) == 0)
+    {
+        int op;
+        printf("Modelo encontrado.\n");
+        printf("Desea modificar?\n1-Si/2-No\n");
+        scanf("%d",&op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+           
+        }
+    }
+    if(aux->m == NULL && strcmp(aux->modelo, modelo) != 0)
+    {   
+        int op;
+        printf("Modelo no encontrado. Desea agregarlo? (1-Si / 2-No):\n ");
+        scanf("%d", &op);
+        while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para Si o 2 para No:\n");
+            while(getchar() != '\n');
+            scanf("%d", &op);
+        }
+        if(op==1)
+        {
+        nueva_moto=malloc(sizeof(struct moto));
+        memset(nueva_moto, 0, sizeof(struct moto));
+        strcpy(nueva_moto->modelo, modelo);
+        nueva_moto->m=NULL;
+        aux->m=nueva_moto;
+        printf("Desea agregar un modelo?\n1-Si/2-No\n");
+        scanf("%d",&op);
+        }   
+    }                                                                        
+    }
 }
+
+
+
