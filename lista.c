@@ -180,7 +180,7 @@ void AgregarMoto(struct moto **m)
     if(aux==NULL)
     {
         int op;
-        printf("El modelo no existe. Desea agregarlo? (1-Si / 2-No):\n ");
+        printf("Modelo no encontrado. Desea agregarlo? (1-Si / 2-No):\n ");
         scanf("%d", &op);
         
         while(op<1 || op>2)
@@ -200,8 +200,10 @@ void AgregarMoto(struct moto **m)
         aux=*m;
         printf("Ingrese stock:");
         scanf("%d",&stock);
+        aux->stock=stock;
         printf("Ingrese precio:$");
         scanf("%d",&precio);
+        aux->precio=precio;
         }
         
         if(op==2)
@@ -231,7 +233,30 @@ void AgregarMoto(struct moto **m)
         }
         if(op==1)
         {
-           
+           int mod; 
+           printf("Modificar:\n1-Stock\n2-Precio\n");
+           scanf("%d", &mod);
+           while(op<1 || op>2)
+        {
+            printf("Opcion invalida. Ingrese 1 para stock o 2 para precio:\n");
+            while(getchar() != '\n');
+            scanf("%d", &mod);
+        }
+        switch(mod)
+        {
+        case 1:
+            printf("Ingrese stock:");
+            scanf("%d",&stock);
+            aux->stock=stock;
+            break;
+        case 2:
+            printf("Ingrese precio:$");
+            scanf("%d",&precio);
+            aux->precio=precio;
+            break;
+        default:
+            break;
+        }
         }
     }
     if(aux->m == NULL && strcmp(aux->modelo, modelo) != 0)
